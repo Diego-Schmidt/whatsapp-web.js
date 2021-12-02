@@ -333,8 +333,7 @@ let ostyp = os.type();
             const attachmentData = await quotedMsg.downloadMedia();
             client.sendMessage(msg.from, attachmentData, { caption: 'Aquí está la multimedia solicitada.' });
         }
-    } else if (msg.body === '!oficinas') {
-        msg.reply(new Location(9.0090439, -79.5361487, 'Oficinas de PaYá'));
+    } 
     } else if (msg.location) {
         msg.reply(msg.location);
     } else if (msg.body.startsWith('!estado ')) {
