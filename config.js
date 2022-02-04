@@ -43,7 +43,9 @@ client.on('auth_failure', msg => {
 });
 
 client.on('ready', () => {
-    console.log('READY');
+	// envía un mensaje a un grupo de whatsapp al conectarse avisando que el bot está online
+client.sendMessage('ungrupodewhatsapp@g.us',"El bot se desconectó pero ya regresó -- *Online*");    
+console.log('READY');
 });
 
 client.on('message', async msg => {
