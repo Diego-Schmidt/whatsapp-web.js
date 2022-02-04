@@ -61,7 +61,8 @@ var sitio = limpio+'.multisitewordpress.com'; // uno el input con el dominio par
 // función para que sólo el admin pueda ejecutar este comando
 if (!["numeroadmin@c.us"].includes(msg.author || msg.from)) return msg.reply("No estás autorizado a usar este comando.");
 else {
-       exec(`cd /home/multisitewordpress.com/public_html && wp plugin deactivate coming-soon --url=${sitio} --allow-root && cualquier otro comando`, {
+	// exec ejecuta el comando wp option patch update (objeto de las opciones del subsitio, en este caso seedprod_settiongs) la opción anidada en ese objeto "enable_maintenance_mode" para desactivar el modo mantenimiento en el subsitio
+       exec(`cd /home/multisitewordpress.com/public_html && wp --url=${limpio} --allow-root option patch update seedprod_settings '{"enable_maintenance_mode":false}' && sudo rm -rf /usr/local/lsws/cachedata/priv`, {
   user: 'usuariossh',
   host: 'ip',
   password: 'contraseña\''
@@ -74,20 +75,41 @@ else {
 
 if (msg.body.startsWith('!cerr@rland ')) {
 var limpio =  msg.body.slice(12); // limpio el input para quedarme con el nombre del subdominio
-var sitio = limpio+'.multisitewordpress.com'; // uno el input con el dominio para crear la url del subdominio
+// var sitio = limpio+'.multisitewordpress.com'; si se quiere unir el input con el dominio para crear la url del subdominio
 // función para que sólo el admin pueda ejecutar este comando
 if (!["numeroadmin@c.us"].includes(msg.author || msg.from)) return msg.reply("No estás autorizado a usar este comando.");
 else {
-       exec(`cd /home/multisitewordpress.com/public_html && wp plugin activate coming-soon --url=${final} --allow-root && cualquier otro comando`, {
-  user: 'usuario',
+	// exec ejecuta el comando wp option patch update (objeto de las opciones del subsitio, en este caso seedprod_settiongs) la opción anidada en ese objeto "enable_maintenance_mode" para activar el modo mantenimiento en el subsitio
+       exec(`cd /home/multisitewordpress.com/public_html && wp --url=${limpio} --allow-root option patch update seedprod_settings '{"enable_maintenance_mode":true}' && sudo rm -rf /usr/local/lsws/cachedata/priv`, {
+  user: 'usuariossh',
   host: 'ip',
-  password: 'clave\''
+  password: 'contraseña\''
 }).pipe(process.stdout)
         client.sendMessage(msg.from,'Subsitio '+sitio+' cerrado');
 	}
 }
 // fin comandos para abrir y cerrar landings individualmente
 
+// Comando para cambiar el texto de una página en un sitio wordpress, página utilizada en este caso como mensaje del modo mantenimiento del plugin seedprod.
+	
+if (msg.body.startsWith('!mens@jeoff ')) {
+var mensajeoff =  msg.body.slice(12);
+// exec ejecuta el comando para actualizar el html de la página usando wp post update (ID de la página) insertando el contenido html minificado con --post-content=	
+exec(`cd /home/multisitewordpress.com/public_html && wp --allow-root post update 701 --post_content='{<link rel="icon" href="logo.png" sizes="192x192"/><link rel="apple-touch-icon" href="cropped-fav-180x180.png"/><meta name="msapplication-TileImage" content="cropped-fav-270x270.png"/><style>​html{height:100%;}body{margin:0;}.bg{animation:slide 3s ease-in-out infinite alternate; background-image: linear-gradient(-60deg, #ffff 50%, #ffdc00 50%); bottom:0; left:-50%; opacity:.5; position:fixed; right:-50%; top:0; z-index:-1;}.bg2{animation-direction:alternate-reverse; animation-duration:4s;}.bg3{animation-duration:5s;}.content{background-color:rgba(255,255,255,.8); border-radius:.25em; box-shadow:0 0 .25em rgba(0,0,0,.25); box-sizing:border-box; left:50%; padding:10vmin; position:fixed; text-align:center; top:40%; transform:translate(-50%, -50%);}h1{font-family:monospace;}@keyframes slide{0%{transform:translateX(-25%);}100%{transform:translateX(25%);}}</style> </head> <body><div class="bg"></div><div class="bg bg2"></div><div class="bg bg3"></div><div class="content"> <div style="text-align: center;"><img width="100%" alt="logo" src="https://multisitewordpress.com/wp-content/uploads/2021/06/logo.png"/></div><div style="text-align: center;"><b><span style="font-family: Kozuka Mincho Pr6N;font-size: 1rem;">${mensajeoff}.<p>Gracias por su comprensión.</p></span></b></div><div style="text-align: center;"><br></div></div></body>}' && sudo rm -rf /usr/local/lsws/cachedata/priv`, {
+  user: 'usuariossh',
+  host: 'ip del servidor',
+  password: 'mipassword\''
+}).pipe(process.stdout)
+const user = await msg.getContact();
+let chat = await msg.getChat();
+let por =` comando de *ADMINISTRADOR* *!mens@jeoff* enviado por *${user.pushname}* -- via *${chat.name}* para cambiar el mensaje del modo mantenimiento a *${limpio}*`;
+        client.sendMessage('ungrupodewhatsapp@g.us',por);
+		client.sendMessage(msg.from,'Mensaje de mantenimiento cambiado a '+mensajeoff+' para el modo global de mantenimiento en multisitiowordpress.com');
+	}
+}	
+	
+// fin comando !mens@jeoff	
+	
 // ayuda para los comandos de administradores
 if (msg.body === '!@yuda'){
 // función para que sólo el admin pueda ejecutar este comando
@@ -104,7 +126,7 @@ else {
 if (msg.body === '!ayuda') {
         // le responde a quien ejecuta el comando
 		const user = await msg.getContact();
-        msg.reply(`Hola @${user.pushname} estos son los comandos de ayuda que tiene el bot PaYa: 
+        msg.reply(`Hola @${user.pushname} estos son los comandos de ayuda que tiene el bot Nombredelbot: 
 *- !ayuda muestra esta ayuda
 *- !otro comando
 *`);
