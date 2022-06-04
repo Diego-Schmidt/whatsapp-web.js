@@ -55,6 +55,38 @@ client.on('message', async msg => {
   client.sendMessage(msg.from, 'El comando correcto es !@yuda');
   }
 
+//broadcast comando para enviar un mensaje a todos los grupos en los que está el bot
+
+if (msg.body.startsWith('!broadcast')){
+if (!esAdmin.includes(msg.author || msg.from)) return msg.reply("No estás autorizado a usar este comando.");
+else {
+// Limpiamos el input
+var mensaje =  msg.body.slice(10);
+// Creamos un setTimeout al azar de 1 a 10 segundos
+let rand = Math.floor(Math.random() * 10);
+let rtoms = rand * 1000;
+const user = await msg.getContact();
+let por =` comando de *ADMINISTRADOR* *!broadcast* enviado por *${user.pushname}* -- via *${chat.name}* con el mensaje *${mensaje}*`;
+// Enviamos un aviso de uso de comando a un grupo de control
+client.sendMessage('**********@g.us',por);
+let chats = await client.getChats()
+            chats.forEach(chat => {
+                if (chat.isGroup) {
+                                setTimeout(function(){
+                                client.sendMessage(chat.id._serialized, "*Broadcast:* " + mensaje);
+                                }, rtoms);
+
+}
+            });
+}
+}
+
+// broadcast
+	
+	
+	
+	
+	
 // comando para desactivar el modo mantenimiento individualmente en sitios del tipo subdominio.multisitewordpress.com de un wordpress multisite usando seedprod
 
 if (msg.body.startsWith('!@brirland ')) {
